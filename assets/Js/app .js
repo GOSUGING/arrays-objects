@@ -39,7 +39,7 @@ const arrayRadiologias = [
 
 const arrayTraumatologias = [
     {
-        hora: '8:00',
+        hora: '08:00',
         especialista: 'MARIA PAZ ALTUZARRA',
         paciente: 'PAULA SANCHEZ',
         rut: '15554774-5',
@@ -91,7 +91,7 @@ const arrayTraumatologias = [
 
 const arrayDentales = [
     {
-        hora: '8:30',
+        hora: '08:30',
         especialista: 'ANDREA ZUÑIGA',
         paciente: 'MARCELA RETAMAL',
         rut: '11123425-6',
@@ -158,15 +158,68 @@ for (const item of arrayRadiologias) {
     `
 }
 
+
+
 traumatologia.textContent = `Traumatología: Primera atención: ${arrayTraumatologias[0].paciente} - ${arrayTraumatologias[0].prevision} |  Última atención: ${arrayTraumatologias[arrayTraumatologias.length - 1].paciente} - ${arrayTraumatologias[arrayTraumatologias.length - 1].prevision}`
 
 
+const nuevaArrayTraumatologias = arrayTraumatologias.slice();
 
-const tablaTraumatologia = document.querySelector('#tablaTraumatologia')
+nuevaArrayTraumatologias.push(
+    {
+        hora: '09:00',
+        especialista: 'RENÉ POBLETE ',
+        paciente: 'ANA GELLONA',
+        rut: '13123329-7',
+        prevision: 'ISAPRE'
+    },
+    {
+        hora: '09:30',
+        especialista: 'MARIA SOLAR',
+        paciente: 'RAMIRO ANDRADE',
+        rut: '12221451-K',
+        prevision: 'FONASA'
+    },
+    {
+        hora: '10:00',
+        especialista: 'RAUL LOYOLA',
+        paciente: 'CARMEN ISLA',
+        rut: '10112348-3',
+        prevision: 'FONASA'
+    },
+    {
+        hora: '10:30',
+        especialista: 'ANTONIO LARENAS',
+        paciente: 'PABLO LOAYZA',
+        rut: '13453234-1',
+        prevision: 'ISAPRE'
+    },
+    {
+        hora: '12:00 ',
+        especialista: 'MATIAS ARAVENA',
+        paciente: 'SUSANA POBLETE',
+        rut: '14345656-6',
+        prevision: 'FONASA'
+    }
+);
 
 
-for (const item of arrayTraumatologias) {
-    tablaTraumatologia.innerHTML += `
+nuevaArrayTraumatologias.sort((a, b) => {
+    if (a.hora < b.hora) return -1;
+    if (a.hora > b.hora) return 1;
+    return 0;
+});
+
+console.log(nuevaArrayTraumatologias);
+
+const newTablaTraumatologia = document.querySelector('#newTablaTraumatologia');
+
+
+newTablaTraumatologia.innerHTML = '';
+
+
+for (const item of nuevaArrayTraumatologias) {
+    newTablaTraumatologia.innerHTML += `
     <tr>
         <td>${item.hora}</td>
         <td>${item.especialista}</td>
@@ -174,8 +227,9 @@ for (const item of arrayTraumatologias) {
         <td>${item.rut}</td>
         <td>${item.prevision}</td>
     </tr>
-    `
+    `;
 }
+
 
 dental.textContent = `Dental: Primera atención: ${arrayDentales[0].paciente} - ${arrayDentales[0].prevision} |  Última atención: ${arrayDentales[arrayDentales.length - 1].paciente} - ${arrayDentales[arrayDentales.length - 1].prevision}`
 
@@ -193,3 +247,55 @@ for (const item of arrayDentales) {
     </tr>
     `
 }
+
+
+const contenedorDental = document.querySelector('#contenedorDental');
+
+
+function imprimirConsultaDental(consulta) {
+    const consultaString = `${consulta.hora} - ${consulta.especialista} - ${consulta.paciente} - ${consulta.rut} - ${consulta.prevision}`;
+    const consultaElement = document.createElement('p');
+    consultaElement.textContent = consultaString;
+    contenedorDental.appendChild(consultaElement);
+}
+
+
+arrayDentales.forEach(consulta => {
+    imprimirConsultaDental(consulta);
+});
+
+
+function obtenerNombresPacientesEspecialidad(array) {
+    return array.map(item => item.paciente);
+}
+
+
+const nombresTraumatologias = obtenerNombresPacientesEspecialidad(nuevaArrayTraumatologias);
+const nombresDentales = obtenerNombresPacientesEspecialidad(arrayDentales);
+const nombresRadiologia = obtenerNombresPacientesEspecialidad(arrayRadiologias);
+
+
+const todosLosNombres = [...nombresTraumatologias, ...nombresDentales, ...nombresRadiologia];
+
+
+const listadoPacientes = document.querySelector('#listadoPacientes');
+
+
+todosLosNombres.forEach(nombre => {
+    const paragraph = document.createElement('p');
+    paragraph.textContent = nombre;
+    listadoPacientes.appendChild(paragraph);
+});
+
+const consultasIsapre = arrayDentales.filter(consulta => consulta.prevision === 'ISAPRE');
+
+console.log(consultasIsapre);
+
+const consultasFonasa = nuevaArrayTraumatologias.filter(consulta => consulta.prevision === 'FONASA');
+
+console.log(consultasFonasa);
+
+arrayRadiologias.shift()
+console.log(arrayRadiologias)
+arrayRadiologias.pop()
+console.log(arrayRadiologias)
